@@ -1,0 +1,16 @@
+{
+  "name": "Url Swift Client",
+  "description": "Extension that should run on browser to make url swift work",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "icons": {
+    "128": "icon.ico"
+  },
+  "permissions": [
+    "<all_urls>",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}

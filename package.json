@@ -1,0 +1,33 @@
+{
+  "name": "url-swift-server",
+  "version": "1.0.0",
+  "description": "Node server and extension code for opening a tab in browser with url and change this url every set period.",
+  "main": "server.js",
+  "scripts": {
+    "start": "forever start ./forever/server.json",
+    "stop": "forever stop urlswift",
+    "stopall": "forever stopall",
+    "list": "forever list",
+    "logs": "forever logs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keineausweise/url-swift-server.git"
+  },
+  "author": "keineausweise",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/keineausweise/url-swift-server/issues"
+  },
+  "engines": {
+    "node": ">=8.9.4"
+  },
+  "homepage": "https://github.com/keineausweise/url-swift-server#readme",
+  "dependencies": {
+    "args": "^3.0.8",
+    "express": "^4.16.3",
+    "forever": "^0.15.3",
+    "mongoose": "^5.0.10"
+  }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Url Swift - Manage</title>
+    <link type="text/css" rel="stylesheet" href="css/normalize.css">
+    <link type="text/css" rel="stylesheet" href="css/skeleton.css">
+    <link type="text/css" rel="stylesheet" href="css/manage.css">
+    <link type="text/css" rel="stylesheet" href="noty/noty.css">
+    <link type="text/css" rel="stylesheet" href="noty/themes/mint.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns">
+                <h1>Manage urls</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
+                <div id="create" class="has-loader default">
+                    <div class="row default">
+                        <div class="twelve columns">
+                            <h3>Add url and post open script</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="six columns">
+                            <div class="url"><textarea></textarea></div>
+                        </div>
+                        <div class="six columns">
+                            <div class="code">
+                                <textarea></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row default">
+                        <div class="six columns"></div>
+                        <div class="six columns u-pull-right">
+                            <div class="controls">
+                                <input id="addButton" type="button" value="ADD">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row loading">
+                        <div class="twelve columns">
+                            <div class="lds-circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row">
+                <div class="twelve columns">
+                    <h3>Manage existing</h3>
+                </div>
+            </div>
+            <div class="twelve columns" >
+                <ol id="list-container" class="list-container">
+
+                </ol>
+            </div>
+        </div>
+    </div>
+    <script src="noty/noty.min.js"></script>
+    <script src="js/deep-equal.single.js"></script>
+    <script src="js/manage.js"></script>
+</body>
+</html>

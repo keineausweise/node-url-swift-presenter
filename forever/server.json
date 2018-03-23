@@ -1,0 +1,9 @@
+{
+  "uid": "urlswift",
+  "append": true,
+  "watch": true,
+  "script": "./server.js",
+  "sourceDir": "./",
+  "minUptime": 5000,
+  "command": "node"
+}
