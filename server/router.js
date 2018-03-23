@@ -41,9 +41,7 @@ router.get('/next/:current', (req, res)=>{
     const current = decodeURIComponent(req.params.current);
     GetNextUrlHandler.handle(current)
         .then(u=>{
-            res.json({
-                url: u
-            });
+            res.json(u);
         })
         .catch(err => {
             res.status(500).json({

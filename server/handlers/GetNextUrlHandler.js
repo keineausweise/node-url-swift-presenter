@@ -37,7 +37,11 @@ class GetNextUrlHandler{
                 break;
         }
 
-        return cache.data[indexToSelect].url;
+        const ret = cache.data[indexToSelect];
+        return {
+            url: ret.url,
+            code: ret.code
+        }
     }
 };
 
