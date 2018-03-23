@@ -38,9 +38,11 @@ function next(){
             current = d.url;
             console.log("Updated");
             if (d.code){
-                chrome.tabs.executeScript(Tab.id, {code: d.code}, r=>{
-                    console.log(`Script executed, result: ${r}`);
-                });
+                setTimeout(()=>{
+                    chrome.tabs.executeScript(Tab.id, {code: d.code}, r=>{
+                        console.log(`Script executed, result: ${r}`);
+                    });
+                }, 2000);
             }
         });
         return d;
