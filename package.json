@@ -27,6 +27,7 @@
   "dependencies": {
     "args": "^3.0.8",
     "express": "^4.16.3",
+    "express-basic-auth": "^1.1.4",
     "forever": "^0.15.3",
     "mongoose": "^5.0.10"
   }

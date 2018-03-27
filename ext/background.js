@@ -1,4 +1,5 @@
-const server = /*<SERVER>*/`http://localhost:8080`/*</SERVER>*/;
+const server = /*<SERVER>*/`http://localhost:8081`/*</SERVER>*/;
+const auth = "username:password";
 
 
 var current = "https://facebook.com",
@@ -17,7 +18,11 @@ chrome.tabs.onRemoved.addListener((tid, info)=>{
 function init(tab){
     Tab = tab;
     clearInterval(interval);
-    fetch(`${server}/config`).then(d=>d.json()).then(conf=>{
+    fetch(`${server}/config`, {
+        headers: {
+            'Authorization': 'Basic '+btoa(auth)
+        }
+    }).then(d=>d.json()).then(conf=>{
         config = conf;
         callNext().then(()=>{
             interval = setInterval(()=>{
@@ -33,7 +38,11 @@ function callNext(){
 
 function next(){
     const fetchUrl = `${server}/next/${encodeURIComponent(current)}`;
-    return fetch(fetchUrl).then(d=>d.json()).then(d=>{
+    return fetch(fetchUrl, {
+        headers: {
+            'Authorization': 'Basic ' + btoa(auth)
+        }
+    }).then(d=>d.json()).then(d=>{
         chrome.tabs.update(Tab.id, {url: d.url}, t=>{
             current = d.url;
             console.log("Updated");
