@@ -17,7 +17,7 @@ class MoDb{
     getAllUrls(){
         return new Promise((resolve, reject) => {
             this._UrlModel.find()
-                .sort('+order')
+                .sort('order')
                 .exec(function(err, tasks){
                     if (err) {return reject(err);}
                     resolve(tasks);
@@ -29,7 +29,7 @@ class MoDb{
         return new Promise((resolve, reject) => {
             this._UrlModel.find()
                 .where('enabled').ne(false)
-                .sort('+order')
+                .sort('order')
                 .exec(function(err, tasks){
                     if (err) {return reject(err);}
                     resolve(tasks);
