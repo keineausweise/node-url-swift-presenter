@@ -20,7 +20,9 @@ function lookForParentOfClass(el, className){
 }
 
 const defaultNoty = {
-    theme: 'mint'
+    theme: 'mint',
+    progressBar: true,
+    timeout: 3000
 };
 
 function noty(params){
@@ -112,10 +114,21 @@ function oneToHtml(one){
         </div>
     </div>
     <div class="row default">
-        <div class="six columns"></div>
+        <div class="two columns">
+            <label>
+                <input type="checkbox" ${one.enabled ? 'checked' : ''}/>
+                Enabled
+            </label>
+        </div>
+        <div class="four columns">
+            <label>
+                Order
+                <input type="number" ${one.order ? `value=${one.order}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
+            </label>
+        </div>
         <div class="six columns u-pull-right">
             <div class="controls">
-                <input type="button" value="SAVE"/>
+                <input type="button" value="SAVE" data-type="save-button" data-oneid="${one._id}"/>
                 <input type="button" value="REMOVE" data-type="remove-button" data-oneid="${one._id}"/> 
             </div>
         </div>
@@ -184,8 +197,11 @@ document.getElementById("addButton").addEventListener('click', e=>{
 });
 
 listContainer.addEventListener('click', e=>{
-    if (e.target.getAttribute("data-type") === "remove-button"){
+    const dataType = e.target.getAttribute("data-type");
+    if (dataType === "remove-button"){
         onDeleteClick(e);
+    } else if (dataType === "save-button") {
+        onSaveClick(e);
     }
 });
 
@@ -210,6 +226,68 @@ function onDeleteClick(e){
             noty({type: 'error', text: `Error: ${err.toString()}`}).show();
             parent.classList.add("default");
             parent.classList.remove("loading");
+        })
+}
+
+function onSaveClick(e){
+    const target = e.target,
+          id = target.getAttribute("data-oneid");
+
+    const parent = lookForParentOfClass(target, 'has-loader');
+
+    parent.classList.remove("default");
+    parent.classList.add("loading");
+
+    function hideLoading(){
+        parent.classList.add("default");
+        parent.classList.remove("loading");
+    }
+
+    const urlVal = parent.querySelector("div.url textarea").value.trim(),
+          codeVal = parent.querySelector("div.code textarea").value.trim(),
+          enabled = parent.querySelector("input[type='checkbox']").checked,
+          order = parseInt(parent.querySelector("input[type='number']").value);
+
+    if (urlVal.length < 5){
+        noty({
+            type: 'error',
+            layout: 'topRight',
+            text: 'Url should be filled'
+        }).show();
+        hideLoading();
+        return;
+    }
+
+    const select = {
+            _id: id
+          },
+          update = {
+              url:     urlVal,
+              code:    codeVal,
+              enabled: enabled
+          };
+
+    if (order){
+        update.order = order;
+    }
+
+    fetch(`/update`, {
+        method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            select, update
+        })
+    })
+        .then(d=>{d.json()})
+        .then(d=>{
+            noty({type: 'success', text: "Updated successfully"}).show();
+            hideLoading();
+        })
+        .catch(err=>{
+            noty({type: 'error', text: `Error: ${err.toString()}`}).show();
+            hideLoading();
         })
 }
 

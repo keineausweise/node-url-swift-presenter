@@ -88,7 +88,7 @@ router.delete('/id/:id', (req, res)=>{
     });
 });
 
-router.patch('/url', (req, res)=>{
+router.post('/update', (req, res)=>{
     if (req.header("Content-Type") !== "application/json"){
         res.status(400).json({
             message: "Content-Type application/json expected."

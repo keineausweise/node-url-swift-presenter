@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const urlSchema = new Schema({
     url:  String,
-    hidden: Boolean,
+    enabled: Boolean,
     order: {type: Number, default: 0},
     code: String
 });

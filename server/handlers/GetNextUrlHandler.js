@@ -11,7 +11,7 @@ const CACHE_UPDATE_TIMEOUT = global.server_settings.getNextCacheTime;
 class GetNextUrlHandler{
     async handle(current){
         if (Date.now() - cache.lastUpdate > CACHE_UPDATE_TIMEOUT){
-            cache.data = await modb.getAllUrls();
+            cache.data = await modb.getAllEnabledUrls();
             console.log("Updated cache", cache.data);
         }
 

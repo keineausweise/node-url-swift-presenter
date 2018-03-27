@@ -17,7 +17,18 @@ class MoDb{
     getAllUrls(){
         return new Promise((resolve, reject) => {
             this._UrlModel.find()
-                .where('hidden').ne(true)
+                .sort('+order')
+                .exec(function(err, tasks){
+                    if (err) {return reject(err);}
+                    resolve(tasks);
+                });
+        })
+    }
+
+    getAllEnabledUrls(){
+        return new Promise((resolve, reject) => {
+            this._UrlModel.find()
+                .where('enabled').ne(false)
                 .sort('+order')
                 .exec(function(err, tasks){
                     if (err) {return reject(err);}
