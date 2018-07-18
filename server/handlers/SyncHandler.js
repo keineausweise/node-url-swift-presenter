@@ -19,7 +19,7 @@ class SyncHandler{
         return ( ( (this.current.show_for_s * 1000) + this.currentStartAt ) - Date.now() ) < 0;
     }
 
-    getCurrentWithMeta(current =this.current){
+    getCurrentWithTime(current =this.current){
         current = Object.assign({}, current);
         if (current){
             current.left_to_show_ms = ( (current.show_for_s * 1000) + this.currentStartAt ) - Date.now();
@@ -29,13 +29,17 @@ class SyncHandler{
         return current;
     }
 
-    async handle(){
+    async handle(time){
         if (this.currentTimeIsUp()){
             const nextCurrent = await this._getNextCurrent();
             this.current = nextCurrent;
             this.currentStartAt = Date.now();
         }
-        return this.getCurrentWithMeta();
+        if (time){
+            return this.getCurrentWithTime();
+        }else{
+            return this.current;
+        }
     }
 
     async _getNextCurrent(){

@@ -39,7 +39,7 @@ router.get('/all/detailed', (req, res) => {
 });
 
 router.get('/sync/', (req, res) => {
-    SyncHandler.handle().then(current=>{
+    SyncHandler.handle(req.query.time).then(current=>{
         res.send(JSON.stringify(current));
     }, err => {
         console.error(err);
