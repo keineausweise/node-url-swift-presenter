@@ -62,7 +62,7 @@ class SyncHandler{
             url: ret.url,
             code: ret.code,
             show_for_s: ret.show_for_s,
-            left_to_show_ms: ( (this.current.show_for_s * 1000) + this.currentStartAt ) - Date.now()
+            left_to_show_ms: this.current ? ( (this.current.show_for_s * 1000) + this.currentStartAt ) - Date.now() : 0
         }
     }
 }
