@@ -1,59 +1,75 @@
 const server = /*<SERVER>*/`http://localhost:8081`/*</SERVER>*/;
-const auth = "username:password";
+
+var
+    state = {},
+    thetab,
+    negativeCnt = 0;
 
 
-var current = "https://facebook.com",
-    config, Tab, interval;
 
-const start = ()=>{chrome.tabs.create({}, (tab)=>{
-    init(tab);
-})};
-start();
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function stateIsNew(remoteState){
+    return
+        state.url !== remoteState.url ||
+        state.code !== remoteState.code;
+}
+
+function runSync(callback){
+    fetch(`${server}/sync/`, {
+        headers: {}
+    })
+        .then(d=>d.json())
+        .then(remoteState=>{
+            if (stateIsNew(remoteState)){
+                state = remoteState;
+                updateForState(state);
+                negativeCnt = 0;
+            } else {
+                negativeCnt++;
+            }
+            callback && setTimeout(()=>callback(), 1);
+        }
+    );
+}
+
+function updateForState(state) {
+    chrome.tabs.update(thetab.id, {url: state.url}, tab=>{
+        thetab = tab;
+        setTimeout(()=>{
+            runSync()
+        }, state.show_for_s*1000);
+    });
+}
+
+
+const start = ()=>{
+    chrome.tabs.create({}, (tab)=>{
+        thetab = tab;
+        runSync();
+    })
+};
+
 chrome.tabs.onRemoved.addListener((tid, info)=>{
     if (!info.isWindowClosing){
-        start();
+        if (thetab && tid === thetab.id){
+            start();
+        }
     }
 });
 
-function init(tab){
-    Tab = tab;
-    clearInterval(interval);
-    fetch(`${server}/config`, {
-        headers: {
-            'Authorization': 'Basic '+btoa(auth)
-        }
-    }).then(d=>d.json()).then(conf=>{
-        config = conf;
-        callNext().then(()=>{
-            interval = setInterval(()=>{
-                callNext();
-            }, config.nextTimeout);
-        });
-    });
+const CHECK_TIME_DEFAULT = 30000; // 30s
+const CHECK_TIME_MINIMUM = 2000; // 2s
+
+function keepChecking(){
+    let checkIn = CHECK_TIME_DEFAULT / (negativeCnt||1);
+    if (checkIn < CHECK_TIME_MINIMUM) checkIn = CHECK_TIME_MINIMUM;
+    setTimeout(()=>{
+        runSync(()=>{keepChecking()})
+    }, checkIn);
 }
 
-function callNext(){
-    return next();
-}
-
-function next(){
-    const fetchUrl = `${server}/next/${encodeURIComponent(current)}`;
-    return fetch(fetchUrl, {
-        headers: {
-            'Authorization': 'Basic ' + btoa(auth)
-        }
-    }).then(d=>d.json()).then(d=>{
-        chrome.tabs.update(Tab.id, {url: d.url}, t=>{
-            current = d.url;
-            console.log("Updated");
-            if (d.code){
-                setTimeout(()=>{
-                    chrome.tabs.executeScript(Tab.id, {code: d.code}, r=>{
-                        console.log(`Script executed, result: ${r}`);
-                    });
-                }, 2000);
-            }
-        });
-        return d;
-    });
-}
+start();
+keepChecking();

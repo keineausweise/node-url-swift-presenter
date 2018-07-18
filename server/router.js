@@ -5,6 +5,7 @@ const AddUrlHandler = new (require('./handlers/AddUrlHandler'))();
 const GetNextUrlHandler = new (require('./handlers/GetNextUrlHandler'))();
 const DeleteHandler = new (require('./handlers/DeleteHandler'))();
 const UpdateHandler = new (require('./handlers/UpdateHandler'))();
+const SyncHandler = new (require('./handlers/SyncHandler'))();
 
 
 router.get('/status', (req, res) => {
@@ -33,6 +34,23 @@ router.get('/all/detailed', (req, res) => {
         res.status(500).json({
             errStr: err.toString(),
             result: "Can't get all from db."
+        });
+    })
+});
+
+router.get('/sync/', (req, res) => {
+    SyncHandler.handle().then(current=>{
+        res.json(current);
+    }, err => {
+        res.status(500).json({
+            errStr: err.toString(),
+            result: "Can't sync"
+        }).catch(err => {
+            res.status(500).json({
+                errStr: err.toString(),
+                result: "Can't get next url",
+                catch:  true
+            })
         });
     })
 });
