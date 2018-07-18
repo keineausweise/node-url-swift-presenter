@@ -46,7 +46,7 @@ router.get('/sync/', (req, res) => {
             "Expires": "0",
             "Surrogate-Control": "no-store"
         });
-        res.removeHeader("ETag");
+        req.method="NONE"; // to remove ETag
         res.json(current);
     }, err => {
         console.error(err);
