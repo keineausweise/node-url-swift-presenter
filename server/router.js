@@ -42,10 +42,12 @@ router.get('/sync/', (req, res) => {
     SyncHandler.handle().then(current=>{
         res.json(current);
     }, err => {
+        console.error(err);
         res.status(500).json({
             errStr: err.toString(),
             result: "Can't sync"
         }).catch(err => {
+            console.error(err);
             res.status(500).json({
                 errStr: err.toString(),
                 result: "Can't get next url",
