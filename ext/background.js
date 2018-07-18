@@ -12,9 +12,9 @@ function getRandomInt(min, max) {
 }
 
 function stateIsNew(remoteState){
-    return
+    return (
         state.url !== remoteState.url ||
-        state.code !== remoteState.code;
+        state.code !== remoteState.code);
 }
 
 function runSync(callback){
@@ -38,9 +38,22 @@ function runSync(callback){
 function updateForState(state) {
     chrome.tabs.update(thetab.id, {url: state.url}, tab=>{
         thetab = tab;
-        setTimeout(()=>{
-            runSync()
-        }, state.show_for_s*1000);
+
+        if (state.code && state.code.length > 1){
+            setTimeout(()=>{
+                chrome.tabs.executeScript(thetab.id, {
+                    code: state.code
+                }, ()=>{
+                    setTimeout(()=>{
+                        runSync()
+                    }, state.show_for_s*1000);
+                })
+            }, 300);
+        }else{
+            setTimeout(()=>{
+                runSync()
+            }, state.show_for_s*1000);
+        }
     });
 }
 
