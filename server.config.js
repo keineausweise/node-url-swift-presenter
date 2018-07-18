@@ -1,6 +1,6 @@
 module.exports = {
     welcomeMessage: "Welcome!",
-    port: 8081,
+    port: 8091,
     mode: "mongo", //mongo, file
     mongo: {
         connectionStr: "mongodb://localhost:27017/url-swift"

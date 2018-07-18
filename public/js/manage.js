@@ -120,13 +120,19 @@ function oneToHtml(one){
                 Enabled
             </label>
         </div>
-        <div class="four columns">
+        <div class="three columns">
             <label>
                 Order
                 <input type="number" ${one.order ? `value=${one.order}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
             </label>
         </div>
-        <div class="six columns u-pull-right">
+        <div class="three columns">
+            <label>
+                Show for
+                <input type="number" ${one.order ? `value=${one.order}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
+            </label>
+        </div>        
+        <div class="four columns u-pull-right">
             <div class="controls">
                 <input type="button" value="SAVE" data-type="save-button" data-oneid="${one._id}"/>
                 <input type="button" value="REMOVE" data-type="remove-button" data-oneid="${one._id}"/> 
