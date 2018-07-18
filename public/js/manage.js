@@ -123,13 +123,13 @@ function oneToHtml(one){
         <div class="three columns">
             <label>
                 Order
-                <input type="number" ${one.order ? `value=${one.order}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
+                <input type="number" name="order" ${one.order ? `value=${one.order}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
             </label>
         </div>
         <div class="three columns">
             <label title="Show url for N seconds">
                 Show for
-                <input type="number" ${one.show_for_s ? `value=${one.show_for_s}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
+                <input type="number" name="show-for" ${one.show_for_s ? `value=${one.show_for_s}` : `placeholder="0"`} step="1" min="0" max="10000" pattern="\\d+"/>
             </label>
         </div>        
         <div class="four columns u-pull-right">
@@ -252,7 +252,8 @@ function onSaveClick(e){
     const urlVal = parent.querySelector("div.url textarea").value.trim(),
           codeVal = parent.querySelector("div.code textarea").value.trim(),
           enabled = parent.querySelector("input[type='checkbox']").checked,
-          order = parseInt(parent.querySelector("input[type='number']").value);
+          order = parseInt(parent.querySelector("input[type='number'][name='order']").value),
+          showFor = parseInt(parent.querySelector("input[type='number'][name='show-for']").value);
 
     if (urlVal.length < 5){
         noty({
@@ -275,6 +276,10 @@ function onSaveClick(e){
 
     if (order){
         update.order = order;
+    }
+
+    if (showFor){
+        update.show_for_s = showFor;
     }
 
     fetch(`/update`, {
