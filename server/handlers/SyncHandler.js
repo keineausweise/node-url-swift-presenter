@@ -16,7 +16,7 @@ class SyncHandler{
 
     currentTimeIsUp(){
         if (!this.current) return true;
-        return ( ( (this.current.show_for_s * 1000) + this.currentStartAt ) - Date.now() ) > 0;
+        return ( ( (this.current.show_for_s * 1000) + this.currentStartAt ) - Date.now() ) < 0;
     }
 
     async handle(){
