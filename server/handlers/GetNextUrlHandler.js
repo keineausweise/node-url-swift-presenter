@@ -12,7 +12,6 @@ class GetNextUrlHandler{
     async handle(current){
         if (Date.now() - cache.lastUpdate > CACHE_UPDATE_TIMEOUT){
             cache.data = await modb.getAllEnabledUrls();
-            console.log("Updated cache", cache.data);
         }
 
         const currentIndex = (()=>{
