@@ -44,10 +44,11 @@ router.get('/sync/', (req, res) => {
             "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
             "Pragma": "no-cache",
             "Expires": "0",
-            "Surrogate-Control": "no-store"
+            "Surrogate-Control": "no-store",
+            "Content-Type": "application/json; charset=utf-8"
         });
         req.method="NONE"; // to remove ETag
-        res.json(current);
+        res.send(JSON.stringify(current));
     }, err => {
         console.error(err);
         res.status(500).json({
