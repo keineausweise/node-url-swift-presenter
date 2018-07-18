@@ -1,3 +1,6 @@
+const MoDb = require('../db/MoDb');
+const modb = MoDb.instance;
+
 const cache = {
     lastUpdate: 0,
     data: []
