@@ -31,10 +31,10 @@ class SyncHandler{
     async _getNextCurrent(){
         if (Date.now() - cache.lastUpdate > CACHE_UPDATE_TIMEOUT){
             cache.data = await modb.getAllEnabledUrls();
-            console.log("Updated cache", cache.data);
         }
 
         const currentIndex = (()=>{
+            if (!this.current) return -1;
             for (let i=0; i<cache.data.length; i++){
                 if (cache.data[i].url === this.current.url){
                     return i;
