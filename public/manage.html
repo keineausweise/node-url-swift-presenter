@@ -19,6 +19,46 @@
         </div>
         <div class="row">
             <div class="twelve columns">
+                <h3>Force</h3>
+            </div>
+            <form id="force-form" class="has-loader default">
+                <div class="row">
+                    <div class="twelve columns">
+                        <label>
+                            Url:
+                            <input type="url" name="url" placeholder="http://url.to.open/" required/>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="six columns">
+                        <label>
+                            Show for (seconds):
+                            <input
+                                    type="number"
+                                    name="show_for_s"
+                                    max="1000"
+                                    min="10"
+                                    step="1"
+                                    pattern="\d+"
+                                    placeholder="http://url.to.open/"
+                                    required
+                            />
+                        </label>
+                    </div>
+                    <div class="six columns">
+                        <input type="submit" value="force"/>
+                    </div>
+                </div>
+                <div class="row loading">
+                    <div class="twelve columns">
+                        <div class="lds-circle"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
                 <div id="create" class="has-loader default">
                     <div class="row default">
                         <div class="twelve columns">

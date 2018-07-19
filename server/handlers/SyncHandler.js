@@ -30,7 +30,11 @@ class SyncHandler{
     }
 
     async handle(time){
-        if (this.currentTimeIsUp()){
+        if (this.forcedCurrent){
+            this.current = this.forcedCurrent;
+            this.forcedCurrent = null;
+            this.currentStartAt = Date.now();
+        } else if (this.currentTimeIsUp()){
             const nextCurrent = await this._getNextCurrent();
             this.current = nextCurrent;
             this.currentStartAt = Date.now();
@@ -75,8 +79,13 @@ class SyncHandler{
         return {
             url: ret.url,
             code: ret.code,
-            show_for_s: ret.show_for_s
+            show_for_s: ret.show_for_s,
+            _id: ret._id
         }
+    }
+
+    handleForce(body){
+        this.forcedCurrent = body;
     }
 }
 

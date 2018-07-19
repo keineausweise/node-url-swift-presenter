@@ -57,6 +57,11 @@ router.get('/sync/', (req, res) => {
     })
 });
 
+router.post('/force/', (req, res) => {
+    SyncHandler.handleForce(req.body);
+    res.send(null);
+});
+
 router.get('/next/:current', (req, res)=>{
     const current = decodeURIComponent(req.params.current);
     GetNextUrlHandler.handle(current)

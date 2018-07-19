@@ -61,6 +61,7 @@ const pao = new (class PageObject{
 })();
 
 const listContainer = document.getElementById("list-container");
+const forceForm = document.getElementById("force-form");
 
 function redraw(many){
     many.forEach(redrawOne);
@@ -299,6 +300,42 @@ function onSaveClick(e){
         .catch(err=>{
             noty({type: 'error', text: `Error: ${err.toString()}`}).show();
             hideLoading();
+        })
+}
+
+forceForm.addEventListener('submit', onForce);
+
+function onForce(e){
+    const inputName = forceForm.querySelector("input[name='url']"),
+          inputShowFor = forceForm.querySelector("input[name='show_for_s']"),
+          url = inputName.value,
+          show_for_s = parseInt(inputShowFor.value);
+
+    function showLoading(v){
+        if (v){
+            forceForm.classList.remove("default");
+            forceForm.classList.add("loading");
+        }else{
+            forceForm.classList.remove("loading");
+            forceForm.classList.add("default");
+        }
+    }
+
+    showLoading(true);
+
+    fetch('/force', {
+        method: 'post',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            url, show_for_s
+        })
+    })
+        .then(()=>{
+            inputName.value = "";
+            inputShowFor.value = "";
+            showLoading(false);
         })
 }
 
