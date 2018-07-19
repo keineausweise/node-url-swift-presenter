@@ -73,8 +73,8 @@ chrome.tabs.onRemoved.addListener((tid, info)=>{
     }
 });
 
-const CHECK_TIME_DEFAULT = 30000; // 30s
-const CHECK_TIME_MINIMUM = 2000; // 2s
+const CHECK_TIME_DEFAULT = 10000; // 30s
+const CHECK_TIME_MINIMUM = 1000; // 2s
 
 function keepChecking(){
     let checkIn = CHECK_TIME_DEFAULT / (negativeCnt||1);
