@@ -46,6 +46,6 @@ textarea {
     visibility: hidden;
 }
 
-.li.on-air, .li.on-air *{
+li.on-air, li.on-air *{
     background-color: lightskyblue;
 }
