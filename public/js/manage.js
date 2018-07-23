@@ -358,14 +358,14 @@ function sync(){
         .then(()=>{
             setTimeout(()=>{
                 sync()
-            }, 1000)
+            }, 2000)
         })
         .catch(()=>{
             setTimeout(()=>{
                 sync()
-            }, 1000)
+            }, 2000)
         })
 }
 
-setTimeout(()=>{sync()}, 1000);
+setTimeout(()=>{sync()}, 2000);
 /** </SYNC> **/
