@@ -45,3 +45,7 @@ textarea {
 .has-loader.loading .default{
     visibility: hidden;
 }
+
+.li.on-air, .li.on-air *{
+    background-color: lightskyblue;
+}

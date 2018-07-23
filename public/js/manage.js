@@ -340,3 +340,32 @@ function onForce(e){
 }
 
 /** </EVENTS> **/
+
+/** <SYNC> **/
+function sync(){
+    fetch('/sync')
+        .then(d=>d.json())
+        .then(d=>{
+            if (d && d._id){
+                const li = document.getElementById(d._id);
+                const old = document.querySelector("li.on-air");
+                if (li !== old){
+                    if (old) old.classList.remove("on-air");
+                    if (li)  li.classList.add("on-air");
+                }
+            }
+        })
+        .then(()=>{
+            setTimeout(()=>{
+                sync()
+            }, 1000)
+        })
+        .catch(()=>{
+            setTimeout(()=>{
+                sync()
+            }, 1000)
+        })
+}
+
+setTimeout(()=>{sync()}, 1000);
+/** </SYNC> **/
