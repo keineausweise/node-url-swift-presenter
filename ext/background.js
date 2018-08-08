@@ -3,7 +3,8 @@ const server = /*<SERVER>*/`http://localhost:8091`/*</SERVER>*/;
 var
     state = {},
     thetab,
-    negativeCnt = 0;
+    negativeCnt = 0,
+    lastSyncTS = 0;
 
 
 
@@ -18,6 +19,7 @@ function stateIsNew(remoteState){
 }
 
 function runSync(callback){
+    lastSyncTS = Date.now();
     fetch(`${server}/sync/`, {
         headers: {}
     })
@@ -31,8 +33,11 @@ function runSync(callback){
                 negativeCnt++;
             }
             callback && setTimeout(()=>callback(), 1);
-        }
-    );
+        })
+        .catch(err=>{
+            console.error("Error in fetch /sync/", err);
+            callback && setTimeout(()=>callback(err), 1);
+        });
 }
 
 function updateForState(state) {
@@ -65,13 +70,15 @@ const start = ()=>{
     })
 };
 
-chrome.tabs.onRemoved.addListener((tid, info)=>{
+function onTabRemoved(tid, info){
     if (!info.isWindowClosing){
         if (thetab && tid === thetab.id){
             start();
         }
     }
-});
+}
+
+chrome.tabs.onRemoved.addListener(onTabRemoved);
 
 const CHECK_TIME_DEFAULT = 10000; // 30s
 const CHECK_TIME_MINIMUM = 1000; // 2s
@@ -86,3 +93,16 @@ function keepChecking(){
 
 start();
 keepChecking();
+
+
+/**WATCHDOG**/
+setInterval(()=>{
+    if (Date.now() - lastSyncTS < 1000*60*20){ // 20 minutes
+        chrome.tabs.onRemoved.removeListener(onTabRemoved);
+        chrome.tabs.remove(thetab.id);
+        chrome.runtime.reload();
+    }
+    if (Date.now() - lastSyncTS < 1000*60*10){ // 10 minutes
+        keepChecking();
+    }
+}, 1000*60*10); // once per 10 minutes
